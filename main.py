@@ -4,12 +4,18 @@ conn = psycopg2.connect(host="localhost", dbname="postgres", user="postgres", pa
 
 cur = conn.cursor()
 
-# escrever qualquer comando aq
-cur.execute("SELECT * FROM CLIENTE;")
+cur.execute("""CREATE TABLE IF NOT EXISTS Cliente (
+    id INT PRIMARY KEY,
+    nome VARCHAR(255),
+    cpf VARCHAR(11),
+    telefone VARCHAR(15)
+);
+""")
 
-print(cur.fetchall())
+cur.execute("""INSERT INTO Cliente (id, nome, cpf, telefone) VALUES
+(1, 'Marcelo', '77705603759', '556398888888888');
+""")
 
-# fim dos comandos
 conn.commit()
 
 cur.close()
