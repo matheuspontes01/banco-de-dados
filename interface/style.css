@@ -29,4 +29,32 @@ button {
     border: 0px;
     border-radius: 5px;
     margin-right: 0.4rem;
+}   
+
+input[type="text"] {
+    cursor: pointer;
+    border: 0px;
+    border-radius: 5px;
+    margin-right: 0.4rem;
+    padding: 0.3rem;
+}
+
+.campo {
+    text-align: left;
+    margin-left: 2rem;
+    gap: 20px; 
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.botao_cadastrar {
+    margin-left: 2rem;
+    margin-bottom: 2rem;
+    text-align: left;
+}
+
+footer {
+    text-align: left;
+    margin-right: 2rem;
+    margin-left: 2rem;
 }
