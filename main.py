@@ -1,22 +1,27 @@
 import psycopg2
 
-conn = psycopg2.connect(host="localhost", dbname="postgres", user="postgres", password="database123", port=5432)
+#connect to the db
+conn = psycopg2.connect(
+    dbname="postgres",
+    user="postgres",
+    password="85016244",
+    host="170.239.226.80",
+    port="5432"
+)
+print("Conexao estabelecida com sucesso!")
 
+#cursor
 cur = conn.cursor()
 
-cur.execute("""CREATE TABLE IF NOT EXISTS Cliente (
-    id INT PRIMARY KEY,
-    nome VARCHAR(255),
-    cpf VARCHAR(11),
-    telefone VARCHAR(15)
-);
-""")
+cur.execute("""CREATE TABLE teste (
+    id_teste serial primary key,
+    nome_teste varchar(100)
+);""")
 
-cur.execute("""INSERT INTO Cliente (id, nome, cpf, telefone) VALUES
-(1, 'Marcelo', '77705603759', '556398888888888');
-""")
 
+#commit the transiction
 conn.commit()
 
+#close cursor
 cur.close()
 conn.close()
