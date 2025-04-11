@@ -1,0 +1,49 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'vendas/style.css' %}">
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar novo pedido</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Criar novo pedido</h1>
+    </header>
+    <main>
+        <section>
+            <form>
+                <div class="campo">
+                    <label for="p11">Numero do produto (id):</label>
+                    <input type="text" id="p11" name="pergunta11" placeholder="Digite o id do produto">
+                </div>
+                <div class="campo">
+                    <label for="p12">Quantidade:</label>
+                    <input type="text" id="p12" name="pergunta12" placeholder="Digite a quantidade do produto">
+                </div>
+                <div class="campo">
+                    <label for="p13">Data do pedido:</label>
+                    <input type="date" id="p13" name="pergunta13">
+                </div>
+                <div class="campo">
+                    <label for="p14">Total:</label>
+                    <input type="text" id="p14" name="pergunta14" placeholder="Digite o total do pedido">
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <button class="botao_cadastrar">Criar</button>
+
+    <footer>
+        <a href="{% url 'index' %}" target="_self">
+            Voltar a pagina inicial.
+        </a>
+    </footer>
+    
+</body>
+</html>
