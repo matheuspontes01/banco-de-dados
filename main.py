@@ -2,10 +2,10 @@ import psycopg2
 
 #connect to the db
 conn = psycopg2.connect(
-    dbname="postgres",
+    dbname="teste",
     user="postgres",
-    password="85016244",
-    host="170.239.226.80",
+    password="database123",
+    host="localhost",
     port="5432"
 )
 print("Conexao estabelecida com sucesso!")
