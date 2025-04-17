@@ -24,10 +24,19 @@
                 {% csrf_token %}
 
                 <div class="campo">
-                    <label for="p11">Escolha o id do cliente:</label>
+                    <label for="p11">Escolha o cliente:</label>
                     <select name="id_cliente" id="p11">
-                        {% for id in ids %}
-                            <option value="{{ id }}">{{ id }}</option>
+                        {% for cliente in clientes %}
+                            <option value="{{ cliente.nome }}">{{ cliente.nome }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="p22">Escolha o produto: </label>
+                    <select name="nome_produto" id="p22">
+                        {% for produto in produtos%}
+                            <option value="{{ produto.nome_produto }}">{{ produto.nome_produto }}</option>
                         {% endfor %}
                     </select>
                 </div>

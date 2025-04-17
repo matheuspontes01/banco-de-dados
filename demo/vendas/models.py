@@ -23,7 +23,7 @@ class Pedido(models.Model):
     idcliente = models.ForeignKey(
         Cliente,
         on_delete=models.CASCADE,
-        db_column='id_cliente'
+        db_column='idcliente'
     )
     data_pedido = models.DateField()
     total = models.DecimalField(max_digits=10, decimal_places=2)
@@ -41,6 +41,10 @@ class Fornecedor(models.Model):
     email = models.CharField(max_length=60)
     telefone_fornecedor = models.CharField(max_length=15)
 
+    class Meta:
+        managed = False 
+        db_table = 'fornecedor'
+
     def __str__(self):
         return f"({self.id}) {self.nome_fornecedor}: {self.telefone_fornecedor}"
     
@@ -49,11 +53,75 @@ class Produto(models.Model):
     idfornecedor = models.ForeignKey(
         Fornecedor,
         on_delete=models.CASCADE,
-        db_column='id_fornecedor'
+        db_column='idfornecedor'
     )
     nome_produto = models.CharField(max_length=255)
     preco = models.DecimalField(max_digits=10, decimal_places=2)
     estoque = models.IntegerField()
 
+    class Meta:
+        managed = False  
+        db_table = 'produtos'
+
     def __str__(self):
         return f"({self.id_produto}) {self.nome_produto}: Preco: {self.preco} Estoque: {self.estoque}"
+    
+class Itens_Pedido(models.Model):
+    idpedido = models.ForeignKey(
+        Pedido,
+        on_delete=models.CASCADE,
+        db_column='idpedido'
+    )
+
+    idproduto = models.ForeignKey(
+        Produto,
+        on_delete=models.CASCADE,
+        db_column='idproduto'
+    )
+
+    quantidade = models.IntegerField()
+
+    class Meta:
+        managed = False  
+        db_table = 'itens_pedido'
+
+    def __str__(self):
+        return f" Id do Pedido: {self.idpedido} Id do Produto: {self.idproduto} Quantidade: {self.quantidade}"
+    
+class Pagamento(models.Model):
+    METODO_PAGAMENTO_CHOICES = [
+        ('Cartão de Crédito', 'Cartão de Crédito'),
+        ('PIX', 'PIX'),
+        ('Boleto', 'Boleto'),
+        ('Dinheiro', 'Dinheiro'),
+    ]
+
+    STATUS_PAGAMENTO_CHOICES = [
+        ('Pendente', 'Pendente'),
+        ('Pago', 'Pago'),
+        ('Cancelado', 'Cancelado'),
+    ]
+
+    id_pagamento = models.AutoField(primary_key=True)
+    idpedido = models.ForeignKey(
+        Pedido,
+        on_delete=models.CASCADE,
+        db_column='idpedido'
+    )
+    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    metodo_pagamento = models.CharField(
+        max_length=20,
+        choices=METODO_PAGAMENTO_CHOICES
+    )
+
+    status_pagamento = models.CharField(
+        max_length=10,
+        choices=STATUS_PAGAMENTO_CHOICES
+    )
+
+    class Meta:
+        managed = False  
+        db_table = 'pagamento'
+
+    def __str__(self):
+        return f"ID do pedido: {self.idpedido} Valor: {self.valor} Metodo de Pagamento: {self.metodo_pagamento} Status do Pagamento: {self.status_pagamento}"

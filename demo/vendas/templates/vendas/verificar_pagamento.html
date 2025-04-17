@@ -13,31 +13,43 @@
     </header>
     <main>
         <section>
-            <form>
+            <form method='POST'>
+                {% csrf_token %}
                 <div class="campo">
                     <label for="p15">Numero do pedido (id):</label>
-                    <input type="text" id="p15" name="id_pedido" placeholder="Digite o id do pedido">
+                    <select name="idpedido" id="p15">
+                        {% for pedido in pedidos %}
+                            <option value="{{ pedido }}">pedido</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="campo">
                     <label for="p17">Método de pagamento:</label><br>
-                    <input type="radio" id="p17a" name="cartao_de_credito" value="Cartao de Credito">
+                    <input type="radio" id="p17a" name="metodo_pagamento" value="Cartão de Crédito">
                     <label for="p17a">Cartão de Crédito</label><br>
-                    <input type="radio" id="p17b" name="pix" value="Pix">
-                    <label for="p17b">Pix</label><br>
-                    <input type="radio" id="p17c" name="boleto" value="Boleto">
+                
+                    <input type="radio" id="p17b" name="metodo_pagamento" value="PIX">
+                    <label for="p17b">PIX</label><br>
+                
+                    <input type="radio" id="p17c" name="metodo_pagamento" value="Boleto">
                     <label for="p17c">Boleto</label><br>
-                    <input type="radio" id="p17d" name="dinheiro" value="Dinheiro">
+                
+                    <input type="radio" id="p17d" name="metodo_pagamento" value="Dinheiro">
                     <label for="p17d">Dinheiro</label><br>
                 </div>
+                
                 <div class="campo">
                     <label for="p18">Status do pagamento:</label><br>
-                    <input type="radio" id="p18a" name="pendente" value="Pendente">
+                    <input type="radio" id="p18a" name="status_pagamento" value="Pendente">
                     <label for="p18a">Pendente</label><br>
-                    <input type="radio" id="p18b" name="pago" value="Pago">
+                
+                    <input type="radio" id="p18b" name="status_pagamento" value="Pago">
                     <label for="p18b">Pago</label><br>
-                    <input type="radio" id="p18c" name="cancelado" value="Cancelado">
+                
+                    <input type="radio" id="p18c" name="status_pagamento" value="Cancelado">
                     <label for="p18c">Cancelado</label><br>
                 </div>
+                
                 <div class="campo">
                     <label for="p19">Valor:</label>
                     <input type="text" id="p19" name="valor" placeholder="Digite o total do pedido">

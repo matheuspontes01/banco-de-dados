@@ -27,22 +27,22 @@
                 </div>
 
                 <div class="campo">
-                    <label for="p8">Escolha o id do cliente:</label>
-                    <select name="id_fornecedor" id="p8">
-                        {% for id in ids %}
-                            <option value="{{ id }}">{{ id }}</option>
+                    <label for="p8">Escolha o fornecedor:</label>
+                    <select name="idfornecedor" id="p8">
+                        {% for fornecedor in fornecedores %}
+                            <option value="{{ fornecedor.id_fornecedor }}">{{ fornecedor.nome_fornecedor }}</option>
                         {% endfor %}
                     </select>
                 </div>
 
                 <div class="campo">
                     <label for="p9">Estoque:</label>
-                    <input type="text" id="p9" name="estoque" placeholder="Digite a quantidade no estoque">
+                    <input type="number" id="p9" name="estoque" step="0.01" placeholder="Digite a quantidade no estoque">
                 </div>
 
                 <div class="campo">
                     <label for="p10">Preço:</label>
-                    <input type="text" id="p10" name="preco" placeholder="Digite o preço do produto">
+                    <input type="number" id="p10" name="preco" step="0.01" placeholder="Digite o preço do produto">
                 </div>
 
                 <button class="botao_cadastrar" type="submit">Registrar</button>

@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from .models import Cliente, Pedido, Fornecedor, Produto
+from .models import Cliente, Pedido, Fornecedor, Produto, Pagamento
 
 def index(request):
     return render(request, 'vendas/index.html')
@@ -34,7 +34,7 @@ def criar_novo_fornecedor(request):
 def criar_registro_do_produto(request):
     sucesso = False
 
-    ids = Fornecedor.objects.values_list('id_fornecedor', flat=True) 
+    fornecedores = Fornecedor.objects.all()
 
     if request.method == 'POST':
         idfornecedor = request.POST.get('idfornecedor')
@@ -43,7 +43,7 @@ def criar_registro_do_produto(request):
         estoque = request.POST.get('estoque')
 
         try:
-            fornecedor = Fornecedor.objetcts.get(id_fornecedor=idfornecedor)
+            fornecedor = Fornecedor.objects.get(id_fornecedor=idfornecedor)
             produtos = Produto(idfornecedor=fornecedor, nome_produto=nome_produto, preco=preco, estoque=estoque)
             produtos.save()
             sucesso = True
@@ -51,32 +51,68 @@ def criar_registro_do_produto(request):
             # Fornecedor nao encontrado
             sucesso = False
 
-        return render(request, 'vendas/criar_registro_do_produto.html', {'sucesso': sucesso})
+        return render(request, 'vendas/criar_registro_do_produto.html', {
+        'fornecedores': fornecedores,
+        'sucesso': sucesso
+        })
 
-    return render(request, 'vendas/criar_registro_do_produto.html', {'ids': ids})
+    return render(request, 'vendas/criar_registro_do_produto.html', {
+        'fornecedores': fornecedores,
+        'sucesso': sucesso
+    })
 
 def registrar_novo_pedido(request):
     sucesso = False
 
-    ids = Cliente.objects.values_list('id_cliente', flat=True) 
+    clientes = Cliente.objects.all()
+    produtos = Produto.objects.all()
 
     if request.method == 'POST':
         id_cliente = request.POST.get('idcliente')
+        nome_produto = request.POST.get('nome_produto')
         data_pedido = request.POST.get('data_pedido')
         total = request.POST.get('total')
 
-        try:
-            cliente = Cliente.objects.get(id_cliente=id_cliente)
-            pedido = Pedido(idcliente=cliente, data_pedido=data_pedido, total=total)
-            pedido.save()
-            sucesso = True
-        except Cliente.DoesNotExist:
-            # Cliente não encontrado
-            sucesso = False
+        pedido = Pedido(idcliente=id_cliente, data_pedido=data_pedido, total=total)
+        pedido.save()
 
-        return render(request, 'vendas/registrar_novo_pedido.html', {'sucesso': sucesso})
+        return render(request, 'vendas/registrar_novo_pedido.html', {
+            'clientes': clientes, 
+            'produtos': produtos,
+            'sucesso': sucesso
+        })
     
-    return render(request, 'vendas/registrar_novo_pedido.html', {'ids': ids})
+    return render(request, 'vendas/registrar_novo_pedido.html', 
+        {'clientes': clientes, 
+        'produtos': produtos,
+        'sucesso': sucesso
+    })
 
 def verificar_pagamento(request):
-    return render(request, 'vendas/verificar_pagamento.html')
+    sucesso = False
+    ids = Pedido.objects.values_list('id_pedido', flat=True)
+
+    if request.method=='POST':
+        id_pedido = request.POST.get('idpedido')
+        metodo_de_pagamento = request.POST.get('metodo_pagamento')
+        status_do_pagamento = request.POST.get('status_pagamento')
+        valor = request.POST.get('valor')
+
+        try:
+            pedido = Pedido.objects.get(idcliente=id_pedido)
+            pagamento = Pagamento(idpedido=id_pedido, metodo_pagamento=metodo_de_pagamento, status_pagamento=status_do_pagamento, valor=valor)
+            pagamento.save()
+            sucesso = True
+        except Fornecedor.DoesNotExist:
+            # Fornecedor nao encontrado
+            sucesso = False
+
+        return render(request, 'vendas/verificar_pagamento.html', {
+            'sucesso': sucesso, 
+            'ids': ids
+        })
+
+    return render(request, 'vendas/verificar_pagamento.html', {
+            'sucesso': sucesso, 
+            'ids': ids
+    })
