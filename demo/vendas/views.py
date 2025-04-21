@@ -97,36 +97,38 @@ def registrar_novo_pedido(request):
 
 def verificar_pagamento(request):
     sucesso = False
-    ids = Pedido.objects.values_list('id_pedido', flat=True)
+    pedidos = Pedido.objects.all()
 
     if request.method=='POST':
         id_pedido = request.POST.get('idpedido')
         metodo_de_pagamento = request.POST.get('metodo_pagamento')
         status_do_pagamento = request.POST.get('status_pagamento')
-        valor = request.POST.get('valor')
 
         try:
-            pedido = Pedido.objects.get(idcliente=id_pedido)
-            pagamento = Pagamento(idpedido=id_pedido, metodo_pagamento=metodo_de_pagamento, status_pagamento=status_do_pagamento, valor=valor)
+            pedido = Pedido.objects.get(id_pedido=id_pedido)
+            valor = pedido.total
+            pagamento = Pagamento(idpedido=pedido, valor=valor, metodo_de_pagamento=metodo_de_pagamento, status_pagamento=status_do_pagamento)
             pagamento.save()
             sucesso = True
-        except Fornecedor.DoesNotExist:
+        except Pedido.DoesNotExist:
             # Fornecedor nao encontrado
             sucesso = False
 
         return render(request, 'vendas/verificar_pagamento.html', {
-            'sucesso': sucesso, 
-            'ids': ids
+            'pedidos': pedidos,
+            'sucesso': sucesso
         })
 
     return render(request, 'vendas/verificar_pagamento.html', {
-            'sucesso': sucesso, 
-            'ids': ids
+            'pedidos': pedidos,
+            'sucesso': sucesso
     })
 
 def adicionar_itens(request, id_pedido):
+    inserido = False
     pedido = Pedido.objects.get(id_pedido=id_pedido)
     produtos = Produto.objects.all()
+    itens = []
 
     if request.method == 'POST':
         id_produto = request.POST.get('id_produto')
@@ -134,22 +136,37 @@ def adicionar_itens(request, id_pedido):
 
         produto = Produto.objects.get(id_produto=id_produto)
 
+        # Criar o item no banco de dados
         Itens_Pedido.objects.create(
             idpedido=pedido,
             idproduto=produto,  
             quantidade=quantidade
         )
 
+        # Recalcular o total do pedido
+        itens_query = Itens_Pedido.objects.filter(idpedido=pedido)
 
-        # Recalcular total:
-        itens = Itens_Pedido.objects.filter(idpedido=pedido)
-        total = sum(item.idproduto.preco * item.quantidade for item in itens)
+        for item in itens_query:    
+            produto = item.idproduto
+            subtotal = produto.preco * item.quantidade
+            itens.append({
+                'nome_produto': produto.nome_produto,
+                'quantidade': item.quantidade,
+                'preco_unitario': produto.preco,
+                'subtotal': subtotal
+            })
 
+        # Atualizar o total do pedido
+        total = sum(item['subtotal'] for item in itens)
         pedido.total = total
         pedido.save()
 
+        inserido = True
 
     return render(request, 'vendas/adicionar_itens.html', {
         'pedido': pedido,
-        'produtos': produtos
+        'produtos': produtos,
+        'inserido': inserido,
+        'itens': itens
     })
+

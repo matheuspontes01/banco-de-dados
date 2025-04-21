@@ -32,7 +32,7 @@ button {
 }   
 
 input[type="text"], input[type="email"], input[type="date"], input[type='number'] {
-    cursor: pointer;
+    cursor: text;
     border: 0px;
     border-radius: 5px;
     margin-right: 0.4rem;
@@ -68,3 +68,8 @@ footer {
     border: 1px solid #c3e6cb;
     border-radius: 5px;
 }
+
+table {
+    width: 80%;
+    margin: 0 auto;
+  }

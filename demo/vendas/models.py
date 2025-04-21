@@ -93,7 +93,7 @@ class Itens_Pedido(models.Model):
 class Pagamento(models.Model):
     METODO_PAGAMENTO_CHOICES = [
         ('Cartão de Crédito', 'Cartão de Crédito'),
-        ('PIX', 'PIX'),
+        ('Pix', 'Pix'),
         ('Boleto', 'Boleto'),
         ('Dinheiro', 'Dinheiro'),
     ]
@@ -105,13 +105,16 @@ class Pagamento(models.Model):
     ]
 
     id_pagamento = models.AutoField(primary_key=True)
+
     idpedido = models.ForeignKey(
         Pedido,
         on_delete=models.CASCADE,
         db_column='idpedido'
     )
+
     valor = models.DecimalField(max_digits=10, decimal_places=2)
-    metodo_pagamento = models.CharField(
+
+    metodo_de_pagamento = models.CharField(
         max_length=20,
         choices=METODO_PAGAMENTO_CHOICES
     )
@@ -126,4 +129,4 @@ class Pagamento(models.Model):
         db_table = 'pagamento'
 
     def __str__(self):
-        return f"ID do pedido: {self.idpedido} Valor: {self.valor} Metodo de Pagamento: {self.metodo_pagamento} Status do Pagamento: {self.status_pagamento}"
+        return f"ID do pedido: {self.idpedido} Valor: {self.valor} Metodo de Pagamento: {self.metodo_de_pagamento} Status do Pagamento: {self.status_pagamento}"
