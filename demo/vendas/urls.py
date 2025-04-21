@@ -7,6 +7,6 @@ urlpatterns = [
     path('novo-produto/', views.criar_registro_do_produto, name='criar_registro_do_produto'),
     path('novo-pedido/', views.registrar_novo_pedido, name='registrar_novo_pedido'),
     path('verificar-pagamento/', views.verificar_pagamento, name='verificar_pagamento'),
+    path('adicionar-itens/<int:id_pedido>/', views.adicionar_itens, name='adicionar_itens'),
     path('', views.index, name='index'),
-
 ]

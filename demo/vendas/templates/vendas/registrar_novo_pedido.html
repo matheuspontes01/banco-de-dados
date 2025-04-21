@@ -16,10 +16,16 @@
         <section>
             {% if sucesso %}
                 <div class="mensagem-sucesso">
-                    <p>Pedido criado com sucesso!</p>
+                    <p>Pedido criado com sucesso! Redirecionando para adicionar produtos...</p>
                 </div>
+                <script>
+                    setTimeout(function() {
+                        window.location.href = "{% url 'adicionar_itens' id_pedido %}";
+                    }, 2000);
+                </script>
             {% endif %}
 
+            {% if not sucesso %}
             <form method="POST">
                 {% csrf_token %}
 
@@ -33,35 +39,20 @@
                 </div>
 
                 <div class="campo">
-                    <label for="p22">Escolha o produto: </label>
-                    <select name="nome_produto" id="p22">
-                        {% for produto in produtos%}
-                            <option value="{{ produto.nome_produto }}">{{ produto.nome_produto }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="campo">
                     <label for="p12">Data do pedido:</label>
-                    <input type="date" id="p12" name="data_pedido">
+                    <input type="date" id="p12" name="data_pedido" required>
                 </div>
 
-                <div class="campo">
-                    <label for="p13">Total:</label>
-                    <input type="text" id="p13" name="total" placeholder="Digite o total do pedido">
-                </div>
-
-                <button class="botao_cadastrar" type="submit">Criar</button>
+                <button class="botao_cadastrar" type="submit">Criar Pedido</button>
             </form>
+            {% endif %}
         </section>
     </main>
 
-
     <footer>
         <a href="{% url 'index' %}" target="_self">
-            Voltar a pagina inicial.
+            Voltar à página inicial.
         </a>
     </footer>
-    
 </body>
 </html>

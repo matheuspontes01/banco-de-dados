@@ -67,6 +67,7 @@ class Produto(models.Model):
         return f"({self.id_produto}) {self.nome_produto}: Preco: {self.preco} Estoque: {self.estoque}"
     
 class Itens_Pedido(models.Model):
+    id = models.AutoField(primary_key=True)
     idpedido = models.ForeignKey(
         Pedido,
         on_delete=models.CASCADE,
@@ -82,11 +83,12 @@ class Itens_Pedido(models.Model):
     quantidade = models.IntegerField()
 
     class Meta:
-        managed = False  
+        managed = False
         db_table = 'itens_pedido'
 
     def __str__(self):
-        return f" Id do Pedido: {self.idpedido} Id do Produto: {self.idproduto} Quantidade: {self.quantidade}"
+        return f"Pedido: {self.idpedido} Produto: {self.idproduto} Quantidade: {self.quantidade}"
+
     
 class Pagamento(models.Model):
     METODO_PAGAMENTO_CHOICES = [
