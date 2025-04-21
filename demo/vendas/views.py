@@ -1,9 +1,8 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
 from .models import Cliente, Pedido, Fornecedor, Produto, Pagamento
 
-def index(request):
-    return render(request, 'vendas/index.html')
+def home(request):
+    return render(request,'vendas/index.html')
 
 def cadastro_cliente(request):
     if request.method == 'POST':

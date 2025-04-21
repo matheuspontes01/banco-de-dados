@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'vendas'
+    'vendas.apps.VendasConfig',
 ]
 
 MIDDLEWARE = [
@@ -77,9 +77,9 @@ WSGI_APPLICATION = 'demo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Vendas',
+        'NAME': 'postgres',
         'USER': 'postgres',
-        'PASSWORD':'database123',
+        'PASSWORD':'85016244',
         'HOST': 'localhost',
         'PORT': '5432',
     }
