@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar novo pedido</title>
+    <link rel="stylesheet" href="{% static 'vendas/style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Criar novo pedido</h1>
+    </header>
+
+    <main>
+        <section>
+            {% if sucesso %}
+                <div class="mensagem-sucesso">
+                    <p>Pedido criado com sucesso!</p>
+                </div>
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="campo">
+                    <label for="p11">Escolha o cliente:</label>
+                    <select name="id_cliente" id="p11">
+                        {% for cliente in clientes %}
+                            <option value="{{ cliente.nome }}">{{ cliente.nome }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="p22">Escolha o produto: </label>
+                    <select name="nome_produto" id="p22">
+                        {% for produto in produtos%}
+                            <option value="{{ produto.nome_produto }}">{{ produto.nome_produto }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="p12">Data do pedido:</label>
+                    <input type="date" id="p12" name="data_pedido">
+                </div>
+
+                <div class="campo">
+                    <label for="p13">Total:</label>
+                    <input type="text" id="p13" name="total" placeholder="Digite o total do pedido">
+                </div>
+
+                <button class="botao_cadastrar" type="submit">Criar</button>
+            </form>
+        </section>
+    </main>
+
+
+    <footer>
+        <a href="{% url 'index' %}" target="_self">
+            Voltar a pagina inicial.
+        </a>
+    </footer>
+    
+</body>
+</html>
