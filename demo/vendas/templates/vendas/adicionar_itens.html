@@ -65,7 +65,7 @@
                         </tfoot>
                     </table>
                     <br>
-                    <a href="{% url 'index' %}">Finalizar Pedido</a>
+                    <a href="{% url 'verificar_pagamento' pedido.id_pedido %}">Finalizar Pedido</a>
                 {% endif %}
             </form>
         </section>

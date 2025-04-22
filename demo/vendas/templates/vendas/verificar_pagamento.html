@@ -16,18 +16,42 @@
             {% if sucesso %}
                 <div class="mensagem-sucesso">
                     <p>Pagamento registrado com sucesso!</p>
+                    <script>
+                        setTimeout(function() {
+                            window.location.href = "{% url 'index' %}";
+                        }, 2000);
+                    </script>
                 </div>
             {% endif %}
             <form method='POST'>
                 {% csrf_token %}
-                <div class="campo">
-                    <label for="p15">Numero do pedido (id):</label>
-                    <select name="idpedido" id="idpedido">
-                        {% for pedido in pedidos %}
-                            <option value="{{ pedido.id_pedido }}">{{ pedido.id_pedido }}</option>
+                <h2>Itens do Pedido #{{ pedido.id_pedido }}</h2>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Quantidade</th>
+                            <th>Valor Unitário</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in itens %}
+                        <tr>
+                            <td>{{ item.nome_produto }}</td>
+                            <td>{{ item.quantidade }}</td>
+                            <td>R$ {{ item.preco_unitario|floatformat:2 }}</td>
+                            <td>R$ {{ item.subtotal|floatformat:2 }}</td>
+                        </tr>
                         {% endfor %}
-                    </select>
-                </div>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" style="text-align: right;"><strong>Total do Pedido:</strong></td>
+                            <td><strong>R$ {{ pedido.total|floatformat:2 }}</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
                 <div class="campo">
                     <label for="p17">Método de pagamento:</label><br>
                     <input type="radio" id="p17a" name="metodo_pagamento" value='Cartão de Crédito'>

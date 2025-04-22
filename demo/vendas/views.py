@@ -48,7 +48,7 @@ def criar_registro_do_produto(request):
             produtos.save()
             sucesso = True
         except Fornecedor.DoesNotExist:
-            # Fornecedor nao encontrado
+            # Fornecedor nao encontrado]
             sucesso = False
 
         return render(request, 'vendas/criar_registro_do_produto.html', {
@@ -95,17 +95,27 @@ def registrar_novo_pedido(request):
 
 
 
-def verificar_pagamento(request):
+def verificar_pagamento(request, id_pedido):
     sucesso = False
-    pedidos = Pedido.objects.all()
+    pedido = Pedido.objects.get(id_pedido=id_pedido)
+    itens_query = Itens_Pedido.objects.filter(idpedido=id_pedido)
+
+    itens = []
+    for item in itens_query:
+        produto = item.idproduto
+        subtotal = produto.preco * item.quantidade
+        itens.append({
+            'nome_produto': produto.nome_produto,
+            'quantidade': item.quantidade,
+            'preco_unitario': produto.preco,
+            'subtotal': subtotal
+        })
 
     if request.method=='POST':
-        id_pedido = request.POST.get('idpedido')
         metodo_de_pagamento = request.POST.get('metodo_pagamento')
         status_do_pagamento = request.POST.get('status_pagamento')
 
         try:
-            pedido = Pedido.objects.get(id_pedido=id_pedido)
             valor = pedido.total
             pagamento = Pagamento(idpedido=pedido, valor=valor, metodo_de_pagamento=metodo_de_pagamento, status_pagamento=status_do_pagamento)
             pagamento.save()
@@ -115,14 +125,17 @@ def verificar_pagamento(request):
             sucesso = False
 
         return render(request, 'vendas/verificar_pagamento.html', {
-            'pedidos': pedidos,
-            'sucesso': sucesso
+            'pedido': pedido,
+            'sucesso': sucesso,
+            'itens': itens
         })
 
     return render(request, 'vendas/verificar_pagamento.html', {
-            'pedidos': pedidos,
-            'sucesso': sucesso
+            'pedido': pedido,
+            'sucesso': sucesso,
+            'itens': itens
     })
+
 
 def adicionar_itens(request, id_pedido):
     inserido = False
